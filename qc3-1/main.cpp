@@ -1,6 +1,8 @@
 #include <QCoreApplication>
-#include <QSettings>
 #include <QDebug>
+#include <QSettings>
+#include <QStringList>
+#include <QRandomGenerator>
 
 void saveAge(QSettings* settings, QString group, QString name, int age) {
     settings->beginGroup(group);
@@ -50,13 +52,35 @@ int main(int argc, char *argv[])
     //qInfo() << settings.value("test").toString();
     //qInfo() << settings.value("test").toInt();
 
-    saveAge(&settings, "people", "tintin", 16);
-    saveAge(&settings, "whisky", "bowmore", 12);
-    saveAge(&settings, "whisky", "tintin", 2);
+//    saveAge(&settings, "people", "tintin", 16);
+//    saveAge(&settings, "whisky", "bowmore", 12);
+//    saveAge(&settings, "whisky", "tintin", 2);
 
-    qInfo() << getAge(&settings, "people", "tintin");
-    qInfo() << getAge(&settings, "whisky", "bowmore");
-    qInfo() << getAge(&settings, "whisky", "tintin");
+//    qInfo() << getAge(&settings, "people", "tintin");
+//    qInfo() << getAge(&settings, "whisky", "bowmore");
+//    qInfo() << getAge(&settings, "whisky", "tintin");
+
+    QStringList people;
+    people << "Tintin" << "Titi" << "Doc";
+
+    foreach (QString person, people) {
+        int value = QRandomGenerator::global()->bounded(100);
+        saveAge(&settings, "test", person, value);
+    }
+
+    settings.sync();
+
+    qInfo() << settings.fileName();
+
+    foreach (QString group, settings.childGroups()) {
+        settings.beginGroup(group);
+        qInfo() << "Group: " << group;
+
+        foreach (QString key, settings.childKeys()) {
+            qInfo() << "....key " << key << settings.value(key).toString();
+        }
+        settings.endGroup();
+    }
 
     return a.exec();
 }
