@@ -379,7 +379,7 @@ int main(int argc, char *argv[])
         if (lock.getLockInfo(&pid, &host, &application)) {
             qInfo() << "File is locked by " << pid << " " << " " << host << " " << application;
         } else {
-            qInfo() << "Locked by unknown";
+            qInfo() << "Lock by unknown";
         }
     }
 
