@@ -3,6 +3,7 @@
 #include <QDebug>
 #include <QDataStream>
 #include <QFile>
+#include "test.h"
 
 bool saveFile(QString path) {
     QFile file(path);
@@ -48,6 +49,39 @@ bool readFile(QString path) {
     return true;
 }
 
+bool saveFileSerialized(test *t, QString path) {
+    QFile file(path);
+
+    if (!file.open(QIODevice::WriteOnly)) return false;
+
+    QDataStream ds(&file);
+    ds.setVersion(QDataStream::Qt_5_15);
+    ds << *t;
+
+    file.close();
+    return true;
+}
+
+bool readFileSerialized(QString path) {
+    QFile file(path);
+
+    if (!file.open(QIODevice::ReadOnly)) return false;
+
+    QDataStream ds(&file);
+    test t;
+    ds >> t;
+
+    file.close();
+
+    qInfo() << "Name " << t.name();
+
+    foreach (QString key, t.map().keys()) {
+        qInfo() << key << " " << t.map().value(key);
+    }
+
+    return true;
+}
+
 int main(int argc, char *argv[])
 {
     QCoreApplication a(argc, argv);
@@ -58,6 +92,14 @@ int main(int argc, char *argv[])
         qInfo() << "saved";
 
         readFile(file);
+    }
+
+
+    test t;
+    t.fill();
+
+    if (saveFileSerialized(&t , "test2.txt")) {
+        readFileSerialized("test2.txt");
     }
 
     return a.exec();
