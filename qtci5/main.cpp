@@ -4,6 +4,7 @@
 #include <QDateTime>
 #include <QTextStream>
 #include "logger.h"
+#include <QLoggingCategory>
 
 //const QtMessageHandler QT_DEFAULT_MESSAGE_HANDLER = qInstallMessageHandler(nullptr);
 
@@ -41,12 +42,27 @@
 //    (*QT_DEFAULT_MESSAGE_HANDLER)(type, context, message);
 //}
 
+Q_DECLARE_LOGGING_CATEGORY(network);
+Q_LOGGING_CATEGORY(network, "network");
+
 int main(int argc, char *argv[])
 {
     QCoreApplication a(argc, argv);
 
 //    qInstallMessageHandler(lhandler);
     logger::attach();
+
+    qInfo(network) << "category ";
+    QLoggingCategory::setFilterRules("network.debug=false");
+    qDebug(network) << "turned off";
+
+    QLoggingCategory::setFilterRules("network.debug=true");
+    qDebug(network) << "turned on";
+
+    if (!network().isDebugEnabled()) {
+        QLoggingCategory::setFilterRules("network.debug=true");
+        qDebug(network) << "turned on";
+    }
 
     qInfo() << "info";
     qDebug() << "debug";
