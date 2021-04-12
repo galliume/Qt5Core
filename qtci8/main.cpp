@@ -4,6 +4,7 @@
 #include <QDataStream>
 #include <QFile>
 #include "test.h"
+#include "converter.h"
 
 bool saveFile(QString path) {
     QFile file(path);
@@ -82,6 +83,28 @@ bool readFileSerialized(QString path) {
     return true;
 }
 
+void writeJson(QString path) {
+    test t;
+    t.fill();
+    converter::writeJson(&t, path);
+}
+
+void readJson(QString path) {
+    test *t;
+    t = converter::readJson(path);
+
+    if (!t) {
+        qInfo() << "Object not loaded";
+        return;
+    }
+
+    qInfo() << "Name " << t->name();
+
+    foreach (QString key, t->map().keys()) {
+        qInfo() << key << " " << t->map().value(key);
+    }
+}
+
 int main(int argc, char *argv[])
 {
     QCoreApplication a(argc, argv);
@@ -101,6 +124,11 @@ int main(int argc, char *argv[])
     if (saveFileSerialized(&t , "test2.txt")) {
         readFileSerialized("test2.txt");
     }
+
+    QString path = "testJson.txt";
+
+    writeJson(path);
+    readJson(path);
 
     return a.exec();
 }

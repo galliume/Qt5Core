@@ -30,3 +30,8 @@ void test::setName(QString value)
 QMap<QString, QString> test::map() {
     return m_map;
 }
+
+void test::setMap(QMap<QString, QString> map)
+{
+    m_map = map;
+}

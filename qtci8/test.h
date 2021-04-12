@@ -15,7 +15,7 @@ public:
     QString name();
     void setName(QString value);
     QMap<QString, QString> map();
-
+    void setMap(QMap<QString, QString> map);
     friend QDataStream& operator <<(QDataStream &stream, const test &t) {
         qInfo() << "Overload";
         stream << t.m_name;
