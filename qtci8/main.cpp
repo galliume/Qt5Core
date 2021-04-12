@@ -105,6 +105,29 @@ void readJson(QString path) {
     }
 }
 
+void writeXml(QString path) {
+    test t;
+    t.fill();
+    converter::writeXml(&t, path);
+}
+
+void readXml(QString path) {
+    test *t;
+    t = converter::readXml(path);
+
+    if (!t) {
+        qInfo() << "Object not loaded";
+        return;
+    }
+
+    qInfo() << "Name " << t->name();
+
+    foreach (QString key, t->map().keys()) {
+        qInfo() << key << " " << t->map().value(key);
+    }
+}
+
+
 int main(int argc, char *argv[])
 {
     QCoreApplication a(argc, argv);
@@ -129,6 +152,11 @@ int main(int argc, char *argv[])
 
     writeJson(path);
     readJson(path);
+
+    path = "testXml.txt";
+
+    writeXml(path);
+    readXml(path);
 
     return a.exec();
 }

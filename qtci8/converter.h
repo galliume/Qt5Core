@@ -10,6 +10,9 @@
 #include <QJsonObject>
 #include <QJsonDocument>
 #include <QMap>
+#include <QXmlStreamReader>
+#include <QXmlStreamWriter>
+
 #include "test.h"
 
 class converter : public QObject
@@ -20,6 +23,9 @@ public:
 
     static void writeJson(test * obj, QString path);
     static test* readJson(QString path);
+
+    static void writeXml(test * obj, QString path);
+    static test *readXml(QString path);
 };
 
 #endif // CONVERTER_H
