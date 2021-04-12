@@ -4,6 +4,7 @@
 #include <QDir>
 #include <QTextStream>
 #include <QRandomGenerator>
+#include <QTextCodec>
 
 QByteArray makeData() {
     QByteArray data;
@@ -50,8 +51,6 @@ QString makeDataBase64() {
     return data;
 }
 
-
-
 int main(int argc, char *argv[])
 {
     QCoreApplication a(argc, argv);
@@ -77,12 +76,22 @@ int main(int argc, char *argv[])
     qInfo() << "ASCII " << data.toLatin1();
 
     QString data64 = makeDataBase64();
-    QByteArray bytes(data.toLatin1());
-    QByteArray encoded = bytes.toBase64();
-    QByteArray decoded = bytes.fromBase64(encoded);
 
-    qInfo() << "Encoded " << encoded;
-    qInfo() << "Decoded " << decoded;
+    QTextCodec *codec = QTextCodec::codecForName("UTF-16");
+
+    if (!codec) qFatal("No codec");
+
+    QByteArray bytes = codec->fromUnicode(data);
+    qInfo() << "Bytes : " << bytes;
+    QString string = codec->toUnicode(bytes);
+    qInfo() << "Bytes to unicode : " << bytes;
+
+//    QByteArray bytes(data.toLatin1());
+//    QByteArray encoded = bytes.toBase64();
+//    QByteArray decoded = bytes.fromBase64(encoded);
+
+//    qInfo() << "Encoded " << encoded;
+//    qInfo() << "Decoded " << decoded;
 
     return a.exec();
 }
