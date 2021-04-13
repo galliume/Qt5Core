@@ -19,3 +19,7 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 HEADERS += \
     client.h
+
+MSVC_PATH  = "C:\Qt\5.15.2\mingw81_64"
+LIBS += -L$$MSVC_PATH/../../Tools/OpenSSL/Win_x64/lib -llibcrypto -llibssl
+INCLUDEPATH+= $$MSVC_PATH/../../Tools/OpenSSL/Win_x64/include

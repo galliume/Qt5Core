@@ -7,6 +7,8 @@
 #include <QAbstractSocket>
 #include <QMetaEnum>
 #include <QNetworkProxy>
+#include <QSslSocket>
+#include <QSslPreSharedKeyAuthenticator>
 
 class Client : public QObject
 {
@@ -27,8 +29,17 @@ private slots:
     void stateChanged(QAbstractSocket::SocketState socketState);
     void readyRead();
 
+    //SSL
+    void encrypted();
+    void encryptedBytesWritten(qint64 written);
+    void modeChanged(QSslSocket::SslMode mode);
+    void peerVerifyError(const QSslError &error);
+    void preSharedKeyAuthenticationRequired(QSslPreSharedKeyAuthenticator *authenticator);
+    void sslErrors(const QList<QSslError> &errors);
+
 private:
-    QTcpSocket socket;
+    //QTcpSocket socket;
+    QSslSocket socket;
 };
 
 #endif // CLIENT_H
