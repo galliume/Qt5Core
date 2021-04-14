@@ -41,6 +41,24 @@ void connectDB() {
 
     qInfo() << "Connected";
 
+    QSqlQuery query;
+    QString cmd = "SELECT id, name, age FROM users";
+
+    if (!query.exec(cmd)) {
+        qInfo() << db.lastError().text();
+        qInfo() << query.lastError().text();
+    } else {
+        qInfo() << "Result " << query.size();
+
+        while (query.next()) {
+            int id = query.value(0).toInt();
+            QString name = query.value(1).toString();
+            int age = query.value(2).toInt();
+
+            qInfo() << id << " " << name << " " << age;
+        }
+    }
+
     db.close();
 }
 
