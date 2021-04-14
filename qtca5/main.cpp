@@ -3,12 +3,16 @@
 
 #include "cat.h"
 
-int main(int argc, char *argv[])
-{
-    QCoreApplication a(argc, argv);
+//replace main
+QTEST_MAIN(Cat);
 
-    Cat cat;
-    QTest::qExec(&cat);
+//int main(int argc, char *argv[])
+//{
+//    QCoreApplication a(argc, argv);
 
-    return a.exec();
-}
+//    Cat cat;
+//    cat.setName("fido");
+//    QTest::qExec(&cat);
+
+//    return a.exec();
+//}
