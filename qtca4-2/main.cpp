@@ -63,6 +63,28 @@ int main(int argc, char *argv[])
 {
     QCoreApplication a(argc, argv);
 
+    foreach (QString driver, QSqlDatabase::drivers()) {
+        qInfo() << driver;
+        QSqlDatabase db = QSqlDatabase::addDatabase(driver);
+        QSqlDriver *obj = db.driver();
+
+        qInfo() << "\t Transactions: " << obj->hasFeature(QSqlDriver::DriverFeature::Transactions);
+        qInfo() << "\t QuerySize: " << obj->hasFeature(QSqlDriver::DriverFeature::QuerySize);
+        qInfo() << "\t BLOB: " << obj->hasFeature(QSqlDriver::DriverFeature::BLOB);
+        qInfo() << "\t Unicode: " << obj->hasFeature(QSqlDriver::DriverFeature::Unicode);
+        qInfo() << "\t PreparedQueries: " << obj->hasFeature(QSqlDriver::DriverFeature::PreparedQueries);
+        qInfo() << "\t NamedPlaceholders: " << obj->hasFeature(QSqlDriver::DriverFeature::NamedPlaceholders);
+        qInfo() << "\t PositionalPlaceholders: " << obj->hasFeature(QSqlDriver::DriverFeature::PositionalPlaceholders);
+        qInfo() << "\t LastInsertId: " << obj->hasFeature(QSqlDriver::DriverFeature::LastInsertId);
+        qInfo() << "\t BatchOperations: " << obj->hasFeature(QSqlDriver::DriverFeature::BatchOperations);
+        qInfo() << "\t SimpleLocking: " << obj->hasFeature(QSqlDriver::DriverFeature::SimpleLocking);
+        qInfo() << "\t LowPrecisionNumbers: " << obj->hasFeature(QSqlDriver::DriverFeature::LowPrecisionNumbers);
+        qInfo() << "\t EventNotifications: " << obj->hasFeature(QSqlDriver::DriverFeature::EventNotifications);
+        qInfo() << "\t FinishQuery: " << obj->hasFeature(QSqlDriver::DriverFeature::FinishQuery);
+        qInfo() << "\t MultipleResultSets: " << obj->hasFeature(QSqlDriver::DriverFeature::MultipleResultSets);
+        qInfo() << "\t CancelQuery: " << obj->hasFeature(QSqlDriver::DriverFeature::CancelQuery);
+    }
+
     if (testPlugin()) {
         connectDB();
     }
